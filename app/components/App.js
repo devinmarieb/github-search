@@ -48,7 +48,7 @@ export default class App extends Component {
             value={ this.state.languageWord } onChange={ (e) => this.setState({ languageWord: e.target.value }) }
           />
         </MuiThemeProvider>
-      <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } />
+      <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord || !this.state.languageWord } />
       </section>
     )
   }
