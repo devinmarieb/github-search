@@ -16,6 +16,7 @@ export default class App extends Component {
       language: 'javascript',
       searchWord: '',
       languageWord: '',
+      results: ''
     }
   }
 
@@ -25,30 +26,35 @@ export default class App extends Component {
       return response.json()
     })
     .then((response)=> {
-      console.log(response);
+      this.setState({ results: response.items[0].name })
     })
   }
 
   render() {
     return (
       <section>
-        <MuiThemeProvider>
-          <TextField
-            className='search-field'
-            hintText= 'ex: Games'
-            floatingLabelText='Search'
-            value={ this.state.searchWord } onChange={ (e) => this.setState({ searchWord: e.target.value }) }
-          />
-        </MuiThemeProvider>
-        <MuiThemeProvider>
-          <TextField
-            className='language-field'
-            hintText= 'ex: JavaScript'
-            floatingLabelText='Language'
-            value={ this.state.languageWord } onChange={ (e) => this.setState({ languageWord: e.target.value }) }
-          />
-        </MuiThemeProvider>
-      <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord || !this.state.languageWord } />
+        <aside>
+          <MuiThemeProvider>
+            <TextField
+              className='search-field'
+              hintText= 'ex: Games'
+              floatingLabelText='Search'
+              value={ this.state.searchWord } onChange={ (e) => this.setState({ searchWord: e.target.value }) }
+            />
+          </MuiThemeProvider>
+          <MuiThemeProvider>
+            <TextField
+              className='language-field'
+              hintText= 'ex: JavaScript'
+              floatingLabelText='Language'
+              value={ this.state.languageWord } onChange={ (e) => this.setState({ languageWord: e.target.value }) }
+            />
+          </MuiThemeProvider>
+          <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord || !this.state.languageWord } />
+        </aside>
+        <aside>
+          <p>{this.state.results}</p>
+        </aside>
       </section>
     )
   }
