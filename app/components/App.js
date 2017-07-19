@@ -17,6 +17,16 @@ export default class App extends Component {
     }
   }
 
+  componentWillMount() {
+    let gitHubRequest = ('https://api.github.com/search/repositories?q=tetris+language:assembly&sort=stars&order=desc')
+    fetch(gitHubRequest).then((response)=> {
+      return response.json()
+    })
+    .then((response)=> {
+      console.log(response);
+    })
+  }
+
   render() {
     return (
       <section>
