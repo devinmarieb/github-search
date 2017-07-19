@@ -15,12 +15,12 @@ export default class App extends Component {
       search: 'games',
       language: 'javascript',
       searchWord: '',
-      languageWord: ''
+      languageWord: '',
     }
   }
 
   showGitHubResponse() {
-    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.search}+language:${this.state.language}&sort=stars&order=desc`)
+    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=stars&order=desc`)
     fetch(gitHubRequest).then((response)=> {
       return response.json()
     })
@@ -45,10 +45,10 @@ export default class App extends Component {
             className='language-field'
             hintText= 'ex: JavaScript'
             floatingLabelText='Language'
-            value={ this.state.languagehWord } onChange={ (e) => this.setState({ languagehWord: e.target.value }) }
+            value={ this.state.languageWord } onChange={ (e) => this.setState({ languageWord: e.target.value }) }
           />
         </MuiThemeProvider>
-      <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() }  />
+      <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } />
       </section>
     )
   }
