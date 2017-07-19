@@ -13,7 +13,9 @@ module.exports = {
         query  :{
             presets:['react','es2015']
         }
-     }
+      },
+     { test: /\.css$/, loader: 'style!css' },
+     { test: /\.scss$/, loader: 'style!css!sass' },
     ]
   },
   devServer: {
@@ -21,6 +23,6 @@ module.exports = {
     inline: true
   },
   resolve: {
-    extensions: ['', '.js', '.json', '.jsx']
+    extensions: ['', '.js', '.jsx', '.json', '.scss', '.css']
   }
 }
