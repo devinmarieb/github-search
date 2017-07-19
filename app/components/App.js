@@ -12,13 +12,15 @@ export default class App extends Component {
   constructor() {
     super()
     this.state = {
-      search: 'ex: Games',
-      language: 'ex: JavaScript'
+      search: 'games',
+      language: 'javascript',
+      searchWord: '',
+      languageWord: ''
     }
   }
 
-  componentWillMount() {
-    let gitHubRequest = ('https://api.github.com/search/repositories?q=tetris+language:assembly&sort=stars&order=desc')
+  showGitHubResponse() {
+    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.search}+language:${this.state.language}&sort=stars&order=desc`)
     fetch(gitHubRequest).then((response)=> {
       return response.json()
     })
@@ -35,6 +37,7 @@ export default class App extends Component {
             className='search-field'
             hintText= 'ex: Games'
             floatingLabelText='Search'
+            value={ this.state.searchWord } onChange={ (e) => this.setState({ searchWord: e.target.value }) }
           />
         </MuiThemeProvider>
         <MuiThemeProvider>
@@ -42,9 +45,10 @@ export default class App extends Component {
             className='language-field'
             hintText= 'ex: JavaScript'
             floatingLabelText='Language'
+            value={ this.state.languagehWord } onChange={ (e) => this.setState({ languagehWord: e.target.value }) }
           />
         </MuiThemeProvider>
-      <input className='submit-button' type='submit' value='Go'  />
+      <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() }  />
       </section>
     )
   }
