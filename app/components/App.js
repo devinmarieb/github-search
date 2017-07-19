@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import TextField from 'material-ui/TextField'
 import injectTapEventPlugin from 'react-tap-event-plugin'
+import Repos from './Repos'
 
 import '../../styles/styles'
 
@@ -16,7 +17,7 @@ export default class App extends Component {
       language: 'javascript',
       searchWord: '',
       languageWord: '',
-      results: ''
+      results: []
     }
   }
 
@@ -26,9 +27,12 @@ export default class App extends Component {
       return response.json()
     })
     .then((response)=> {
-      this.setState({ results: response.items[0].name })
+      this.setState({ results: response.items })
+      console.log(response)
     })
   }
+
+
 
   render() {
     return (
@@ -38,7 +42,7 @@ export default class App extends Component {
             <TextField
               className='search-field'
               hintText= 'ex: Games'
-              floatingLabelText='Search'
+              floatingLabelText='Project Type'
               value={ this.state.searchWord } onChange={ (e) => this.setState({ searchWord: e.target.value }) }
             />
           </MuiThemeProvider>
@@ -53,7 +57,7 @@ export default class App extends Component {
           <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord || !this.state.languageWord } />
         </aside>
         <aside>
-          <p>{this.state.results}</p>
+          <Repos ghrepos={this.state.results} />
         </aside>
       </section>
     )
