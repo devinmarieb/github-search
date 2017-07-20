@@ -26,6 +26,7 @@ export default class App extends Component {
     })
     .then((response)=> {
       this.setState({ results: response.items })
+      console.log(response)
     })
   }
 
@@ -45,7 +46,7 @@ export default class App extends Component {
   sortByScore(e) {
     let order
     e.target.value === 'up' ? order = 'asc' : order = 'desc'
-    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=score&order=${order}`)
+    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}&sort=score&order=${order}`)
     fetch(gitHubRequest).then((response)=> {
       return response.json()
     })
@@ -57,7 +58,7 @@ export default class App extends Component {
   sortByStars(e) {
     let order
     e.target.value === 'up' ? order = 'asc' : order = 'desc'
-    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=stars&order=${order}`)
+    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}&sort=stars&order=${order}`)
     fetch(gitHubRequest).then((response)=> {
       return response.json()
     })
@@ -74,7 +75,7 @@ export default class App extends Component {
             <TextField
               className='search-field'
               hintText= 'ex: Games'
-              floatingLabelText='Project Type'
+              floatingLabelText='Project Type (Required)'
               value={ this.state.searchWord } onChange={ (e) => this.setState({ searchWord: e.target.value }) }
             />
           </MuiThemeProvider>
@@ -82,11 +83,11 @@ export default class App extends Component {
             <TextField
               className='language-field'
               hintText= 'ex: JavaScript'
-              floatingLabelText='Language'
+              floatingLabelText='Language (Optional)'
               value={ this.state.languageWord } onChange={ (e) => this.setState({ languageWord: e.target.value }) }
             />
           </MuiThemeProvider>
-          <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord || !this.state.languageWord } />
+          <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord } />
         </aside>
         <aside className='results-list'>
           {this.showSortButtons()}
