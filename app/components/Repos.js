@@ -16,9 +16,8 @@ const Repos = (props)=> {
   })
 
   return (
-    <div>
-      { repoList }
-      {/* can reverse repoList if it needs to go in opposite relevance */}
+    <div className='repo-list'>
+      { props.sortWord === 'score' && props.orderWord === 'asc' ? repoList.reverse() : repoList }
     </div>
   )
 }

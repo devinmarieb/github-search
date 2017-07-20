@@ -22233,6 +22233,8 @@
 
 	__webpack_require__(358);
 
+	__webpack_require__(363);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22270,25 +22272,18 @@
 	      fetch(gitHubRequest).then(function (response) {
 	        return response.json();
 	      }).then(function (response) {
-	        console.log(gitHubRequest);
-	        _this2.setState({ results: response.items });
+	        _this2.setState({ results: response.items, searchWord: '', languageWord: '' });
 	      });
 	    }
 	  }, {
-	    key: 'sortByScore',
-	    value: function sortByScore(e) {
-	      //can't automatically sort by score
-	      //by default, results are sorted by relevance with no query params
+	    key: 'sortByGroup',
+	    value: function sortByGroup(e) {
+	      this.setState({ sortWord: e.target.value === 'score' ? 'score' : 'stars' });
 	    }
 	  }, {
-	    key: 'sortByStars',
-	    value: function sortByStars(e) {
-	      var _this3 = this;
-
-	      this.setState({ orderWord: e.target.value === 'up' ? 'asc' : 'desc' });
-	      setTimeout(function () {
-	        console.log(_this3.state.orderWord);
-	      });
+	    key: 'sortByOrder',
+	    value: function sortByOrder(e) {
+	      this.setState({ orderWord: e.target.value === 'up' ? 'desc' : 'asc' });
 	    }
 	  }, {
 	    key: 'showListInformation',
@@ -22296,7 +22291,7 @@
 	      if (this.state.results.length !== 0) {
 	        return _react2.default.createElement(
 	          'p',
-	          null,
+	          { className: 'top-results-text' },
 	          'Top 30 Results'
 	        );
 	      }
@@ -22304,14 +22299,14 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
+	      var _this3 = this;
 
 	      return _react2.default.createElement(
 	        'section',
 	        null,
 	        _react2.default.createElement(
 	          'aside',
-	          null,
+	          { className: 'input-fields' },
 	          _react2.default.createElement(
 	            _MuiThemeProvider2.default,
 	            null,
@@ -22320,7 +22315,7 @@
 	              hintText: 'ex: Games',
 	              floatingLabelText: 'Project Type (Required)',
 	              value: this.state.searchWord, onChange: function onChange(e) {
-	                return _this4.setState({ searchWord: e.target.value });
+	                return _this3.setState({ searchWord: e.target.value });
 	              }
 	            })
 	          ),
@@ -22332,29 +22327,33 @@
 	              hintText: 'ex: JavaScript',
 	              floatingLabelText: 'Language (Optional)',
 	              value: this.state.languageWord, onChange: function onChange(e) {
-	                return _this4.setState({ languageWord: e.target.value });
+	                return _this3.setState({ languageWord: e.target.value });
 	              }
 	            })
-	          ),
-	          _react2.default.createElement(_SortButtons2.default, {
-	            searchResult: this.state.searchWord,
-	            languageResult: this.state.languageWord,
-	            scoreFunc: function scoreFunc(e) {
-	              return _this4.sortByScore(e);
-	            },
-	            starFunc: function starFunc(e) {
-	              return _this4.sortByStars(e);
-	            }
-	          }),
-	          _react2.default.createElement('input', { className: 'submit-button', type: 'submit', value: 'Go', onClick: function onClick() {
-	              return _this4.showGitHubResponse();
-	            }, disabled: !this.state.searchWord })
+	          )
 	        ),
 	        _react2.default.createElement(
 	          'aside',
-	          { className: 'results-list' },
-	          this.showListInformation(),
-	          _react2.default.createElement(_Repos2.default, { ghrepos: this.state.results })
+	          { className: 'header' },
+	          _react2.default.createElement(_SortButtons2.default, {
+	            searchResult: this.state.searchWord,
+	            languageResult: this.state.languageWord,
+	            groupFunc: function groupFunc(e) {
+	              return _this3.sortByGroup(e);
+	            },
+	            orderFunc: function orderFunc(e) {
+	              return _this3.sortByOrder(e);
+	            }
+	          }),
+	          _react2.default.createElement('input', { className: 'submit-button', type: 'submit', value: 'Go', onClick: function onClick() {
+	              return _this3.showGitHubResponse();
+	            }, disabled: !this.state.searchWord })
+	        ),
+	        this.showListInformation(),
+	        _react2.default.createElement(
+	          'aside',
+	          null,
+	          _react2.default.createElement(_Repos2.default, { ghrepos: this.state.results, sortWord: this.state.sortWord, orderWord: this.state.orderWord })
 	        )
 	      );
 	    }
@@ -32016,8 +32015,8 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    null,
-	    repoList
+	    { className: 'repo-list' },
+	    props.sortWord === 'score' && props.orderWord === 'asc' ? repoList.reverse() : repoList
 	  );
 	};
 
@@ -32043,21 +32042,36 @@
 
 	  return _react2.default.createElement(
 	    'aside',
-	    null,
+	    { className: 'radio-sort-buttons' },
 	    _react2.default.createElement(
 	      'p',
-	      null,
-	      'Sort By'
+	      { className: 'optional' },
+	      'Optional Sort: If none selected, results are sorted by most relevant'
 	    ),
-	    _react2.default.createElement('input', { type: 'radio', value: 'score', name: 'sort-by', onClick: props.scoreFunc }),
-	    _react2.default.createElement('input', { type: 'radio', value: 'stars', name: 'sort-by', onClick: props.scoreFunc }),
 	    _react2.default.createElement(
 	      'p',
-	      null,
-	      'Stars'
+	      { className: 'sort-text' },
+	      'Most'
 	    ),
-	    _react2.default.createElement('input', { type: 'radio', value: 'up', name: 'order-by', onClick: props.starFunc }),
-	    _react2.default.createElement('input', { type: 'radio', value: 'down', name: 'order-by', onClick: props.starFunc })
+	    _react2.default.createElement('input', { className: 'radio', type: 'radio', value: 'up', name: 'order-by', onClick: props.orderFunc }),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'sort-text' },
+	      'Least'
+	    ),
+	    _react2.default.createElement('input', { className: 'radio', type: 'radio', value: 'down', name: 'order-by', onClick: props.orderFunc }),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'sort-text sort-divider' },
+	      'Relevant'
+	    ),
+	    _react2.default.createElement('input', { className: 'radio', type: 'radio', value: 'score', name: 'sort-by', onClick: props.groupFunc }),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'sort-text' },
+	      'Popular'
+	    ),
+	    _react2.default.createElement('input', { type: 'radio', value: 'stars', name: 'sort-by', onClick: props.groupFunc })
 	  );
 	};
 
@@ -32084,8 +32098,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/sass-loader/lib/loader.js!./styles.scss", function() {
-				var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/sass-loader/lib/loader.js!./styles.scss");
+			module.hot.accept("!!../node_modules/css-loader/index.js!./reset.css", function() {
+				var newContent = require("!!../node_modules/css-loader/index.js!./reset.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -32103,7 +32117,7 @@
 
 
 	// module
-	exports.push([module.id, ".title {\n  font-family: 'Raleway', sans-serif; }\n\n.search-field {\n  margin-right: 50px; }\n\n.language-field {\n  margin-right: 50px; }\n\n.submit-button {\n  width: 70px; }\n\n.results-list {\n  height: 50vh; }\n\n.repo {\n  width: 50vw;\n  margin-bottom: 10px;\n  border: 1px solid grey; }\n", ""]);
+	exports.push([module.id, "/* http://meyerweb.com/eric/tools/css/reset/\n   v2.0 | 20110126\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  font-size: 100%;\n  font: inherit;\n  vertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, menu, nav, section {\n  display: block;\n}\nbody {\n  line-height: 1;\n}\nol, ul {\n  list-style: none;\n}\nblockquote, q {\n  quotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n  content: '';\n  content: none;\n}\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\n", ""]);
 
 	// exports
 
@@ -32642,6 +32656,51 @@
 		// send back the fixed css
 		return fixedCss;
 	};
+
+
+/***/ },
+/* 363 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(364);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// Prepare cssTransformation
+	var transform;
+
+	var options = {}
+	options.transform = transform
+	// add the styles to the DOM
+	var update = __webpack_require__(361)(content, options);
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/sass-loader/lib/loader.js!./styles.scss", function() {
+				var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/sass-loader/lib/loader.js!./styles.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 364 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(360)(undefined);
+	// imports
+
+
+	// module
+	exports.push([module.id, ".title {\n  margin-top: 25px;\n  text-align: center;\n  font-family: 'Raleway', sans-serif;\n  font-size: 42px; }\n\n.input-fields {\n  text-align: center;\n  margin-bottom: 20px; }\n\n.search-field {\n  margin-right: 50px; }\n\n.sort-text {\n  display: inline-block;\n  margin: 7px; }\n\n.radio-sort-buttons {\n  text-align: center; }\n\n.sort-divider {\n  border-left: 1px solid black;\n  padding-left: 7px; }\n\n.submit-button {\n  display: block;\n  margin: 7px auto;\n  width: 80px;\n  font-size: 14px;\n  color: #FFFFFF;\n  background-color: #000000;\n  border: none;\n  border-radius: 10px;\n  outline: none; }\n  .submit-button:hover {\n    background-color: #00BCD4; }\n  .submit-button:disabled {\n    background-color: #BDBDBD; }\n  .submit-button:hover:disabled {\n    background-color: #BDBDBD; }\n\n.header {\n  padding-bottom: 7px;\n  box-shadow: 0 4px 6px -6px #222; }\n\n.optional {\n  color: #BDBDBD; }\n\n.top-results-text {\n  margin: 10px;\n  font-size: 18px;\n  text-align: center; }\n\n.repo-list {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: space-around; }\n\n.repo {\n  margin: 20px;\n  width: 45vw;\n  display: inline-block;\n  padding: 10px;\n  line-height: 150%;\n  border: 1px solid grey; }\n", ""]);
+
+	// exports
 
 
 /***/ }
