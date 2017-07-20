@@ -4,7 +4,6 @@ import TextField from 'material-ui/TextField'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import Repos from './Repos'
 import SortButtons from './SortButtons'
-
 import '../../styles/styles'
 
 injectTapEventPlugin();
@@ -27,16 +26,44 @@ export default class App extends Component {
     })
     .then((response)=> {
       this.setState({ results: response.items })
-      console.log(response)
     })
   }
 
   showSortButtons() {
     if(this.state.results.length !== 0) {
       return (
-        <SortButtons searchResult={ this.state.searchWord } languageResult={ this.state.languageWord } />
+        <SortButtons
+          searchResult={ this.state.searchWord }
+          languageResult={ this.state.languageWord }
+          scoreFunc={ (e)=> this.sortByScore(e) }
+          starFunc={ (e)=> this.sortByStars(e) }
+        />
       )
     }
+  }
+
+  sortByScore(e) {
+    let order
+    e.target.value === 'up' ? order = 'asc' : order = 'desc'
+    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=score&order=${order}`)
+    fetch(gitHubRequest).then((response)=> {
+      return response.json()
+    })
+    .then((response)=> {
+      this.setState({ results: response.items })
+    })
+  }
+
+  sortByStars(e) {
+    let order
+    e.target.value === 'up' ? order = 'asc' : order = 'desc'
+    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=stars&order=${order}`)
+    fetch(gitHubRequest).then((response)=> {
+      return response.json()
+    })
+    .then((response)=> {
+      this.setState({ results: response.items })
+    })
   }
 
   render() {
@@ -61,7 +88,7 @@ export default class App extends Component {
           </MuiThemeProvider>
           <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord || !this.state.languageWord } />
         </aside>
-        <aside>
+        <aside className='results-list'>
           {this.showSortButtons()}
           <Repos ghrepos={this.state.results} />
         </aside>
