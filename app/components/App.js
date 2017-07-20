@@ -18,6 +18,8 @@ export default class App extends Component {
       languageWord: '',
       orderWord: 'desc',
       sortWord: '',
+      relevantSort: '',
+      relevantOrder: '',
       results: []
     }
   }
@@ -28,7 +30,7 @@ export default class App extends Component {
       return response.json()
     })
     .then((response)=> {
-      this.setState({ results: response.items, searchWord: '', languageWord: '' })
+      this.setState({ results: response.items, searchWord: '', languageWord: '', relevantSort: this.state.sortWord, relevantOrder: this.state.orderWord })
     })
   }
 
@@ -80,7 +82,7 @@ export default class App extends Component {
           </aside>
           {this.showListInformation()}
           <aside>
-            <Repos ghrepos={this.state.results} sortWord={this.state.sortWord} orderWord={this.state.orderWord} />
+            <Repos ghrepos={this.state.results} sortWord={this.state.relevantSort} orderWord={this.state.relevantOrder} />
           </aside>
       </section>
     )
