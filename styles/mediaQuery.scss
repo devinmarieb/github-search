@@ -1,0 +1,15 @@
+@import './variables';
+
+@media screen and (max-width: 1240px) {
+  .repo {
+    width: 85vw;
+    border: none;
+    border-bottom: 1px solid $secondaryStyleColor;
+  }
+}
+
+@media screen and (max-width: 552px) {
+  .search-field {
+    margin: 0;
+  }
+}

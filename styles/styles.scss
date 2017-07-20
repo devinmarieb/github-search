@@ -1,14 +1,16 @@
+@import './variables';
+
 .title {
   margin-top: 25px;
   text-align: center;
-  font-family: 'Raleway', sans-serif;
+  font-family: $titleFont;
   font-size: 42px;
-  color: #37474F;
+  color: $mainFontColor;
 }
 
 .input-fields {
-  text-align: center;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .search-field {
@@ -18,9 +20,9 @@
 .sort-text {
   display: inline-block;
   margin: 7px;
-  color: #37474F;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
+  color: $mainFontColor;
+  font-family: $siteFont;
+  font-weight: $thinFont;
 }
 
 .radio-sort-buttons {
@@ -28,30 +30,30 @@
 }
 
 .sort-divider {
-  border-left: 1px solid black;
   padding-left: 7px;
+  border-left: 1px solid $mainFontColor;
 }
 
 .submit-button {
   display: block;
   margin: 7px auto;
   width: 80px;
-  font-size: 16px;
-  color: #FFFFFF;
-  background-color: #37474F;
+  outline: none;
   border: none;
   border-radius: 12px;
-  outline: none;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
+  background-color: $mainFontColor;
+  font-family: $siteFont;
+  font-size: 16px;
+  font-weight: $thinFont;
+  color: #FFFFFF;
     &:hover {
-      background-color: #00BCD4;
+      background-color: $mainStyleColor;
     }
     &:disabled {
-      background-color: #BDBDBD;
+      background-color: $lightStyleColor;
     }
     &:hover:disabled {
-      background-color: #BDBDBD;
+      background-color: $lightStyleColor;
     }
 }
 
@@ -61,16 +63,16 @@
 }
 
 .optional {
-  color: #BDBDBD;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
+  font-family: $siteFont;
+  font-weight: $thinFont;
+  color: $lightStyleColor;
 }
 
 .top-results-text {
   margin: 10px;
-  font-size: 18px;
   text-align: center;
-  color: #37474F;
+  font-size: 18px;
+  color: $mainFontColor;
 }
 
 .repo-list {
@@ -80,29 +82,31 @@
 }
 
 .repo {
-  margin: 20px;
-  width: 45vw;
   display: inline-block;
+  margin: 20px;
   padding: 10px;
+  width: 45vw;
   line-height: 150%;
-  border: 1px solid #FFA000;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
+  border: 1px solid $secondaryStyleColor;
+  font-family: $siteFont;
+  font-weight: $thinFont;
 }
 
 .details {
-  color: #FFA000;
-  font-weight: 400;
+  color: $secondaryStyleColor;
+  font-weight: $thickFont;
 }
 
 .user-details {
-  color: #37474F;
+  color: $mainFontColor;
 }
 
 .link {
   text-decoration: none;
-  color: #00BCD4;
+  color: $mainStyleColor;
     &:hover {
-      color: #6A1B9A;
+      color: $linkHoverColor;
     }
 }
+
+@import './mediaQuery';
