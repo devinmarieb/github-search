@@ -15,8 +15,8 @@ export default class App extends Component {
     this.state = {
       searchWord: '',
       languageWord: '',
-      sortWord: 'stars',
       orderWord: 'desc',
+      sortWord: '',
       results: []
     }
   }
@@ -27,35 +27,19 @@ export default class App extends Component {
       return response.json()
     })
     .then((response)=> {
+      console.log(gitHubRequest)
       this.setState({ results: response.items })
-      console.log(response)
     })
   }
 
   sortByScore(e) {
-    // let order
-    this.setState({ sortWord: 'score' })
-    e.target.value === 'up' ? this.setState({ orderWord: 'asc' }) : this.setState({ orderWord: 'desc' })
-    // let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=score&order=${order}`)
-    // fetch(gitHubRequest).then((response)=> {
-    //   return response.json()
-    // })
-    // .then((response)=> {
-    //   this.setState({ results: response.items })
-    // })
+    //can't automatically sort by score
+    //by default, results are sorted by relevance with no query params
   }
 
   sortByStars(e) {
-    // let order
-    this.setState({ sortWord: 'stars' })
-    e.target.value === 'up' ? this.setState({ orderWord: 'asc' }) : this.setState({ orderWord: 'desc' })
-    // let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=stars&order=${order}`)
-    // fetch(gitHubRequest).then((response)=> {
-    //   return response.json()
-    // })
-    // .then((response)=> {
-    //   this.setState({ results: response.items })
-    // })
+    this.setState({ orderWord: e.target.value === 'up' ? 'asc' : 'desc'})
+    setTimeout(()=>{console.log(this.state.orderWord)})
   }
 
   showListInformation() {

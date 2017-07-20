@@ -18,6 +18,7 @@ const Repos = (props)=> {
   return (
     <div>
       { repoList }
+      {/* can reverse repoList if it needs to go in opposite relevance */}
     </div>
   )
 }
