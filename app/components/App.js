@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import Repos from './Repos'
 import SortButtons from './SortButtons'
+import '../../styles/reset'
 import '../../styles/styles'
 
 injectTapEventPlugin();
@@ -27,25 +28,22 @@ export default class App extends Component {
       return response.json()
     })
     .then((response)=> {
-      console.log(gitHubRequest)
-      this.setState({ results: response.items })
+      this.setState({ results: response.items, searchWord: '', languageWord: '' })
     })
   }
 
-  sortByScore(e) {
-    //can't automatically sort by score
-    //by default, results are sorted by relevance with no query params
+  sortByGroup(e) {
+    this.setState({ sortWord: e.target.value === 'score' ? 'score' : 'stars'})
   }
 
-  sortByStars(e) {
-    this.setState({ orderWord: e.target.value === 'up' ? 'asc' : 'desc'})
-    setTimeout(()=>{console.log(this.state.orderWord)})
+  sortByOrder(e) {
+    this.setState({ orderWord: e.target.value === 'up' ? 'desc' : 'asc'})
   }
 
   showListInformation() {
     if(this.state.results.length !== 0) {
       return (
-        <p>Top 30 Results</p>
+        <p className='top-results-text'>Top 30 Results</p>
       )
     }
   }
@@ -53,35 +51,37 @@ export default class App extends Component {
   render() {
     return (
       <section>
-        <aside>
-          <MuiThemeProvider>
-            <TextField
-              className='search-field'
-              hintText= 'ex: Games'
-              floatingLabelText='Project Type (Required)'
-              value={ this.state.searchWord } onChange={ (e) => this.setState({ searchWord: e.target.value }) }
+          <aside className='input-fields'>
+            <MuiThemeProvider>
+              <TextField
+                className='search-field'
+                hintText= 'ex: Games'
+                floatingLabelText='Project Type (Required)'
+                value={ this.state.searchWord } onChange={ (e) => this.setState({ searchWord: e.target.value }) }
+              />
+            </MuiThemeProvider>
+            <MuiThemeProvider>
+              <TextField
+                className='language-field'
+                hintText= 'ex: JavaScript'
+                floatingLabelText='Language (Optional)'
+                value={ this.state.languageWord } onChange={ (e) => this.setState({ languageWord: e.target.value }) }
+              />
+            </MuiThemeProvider>
+          </aside>
+          <aside className='header'>
+            <SortButtons
+              searchResult={ this.state.searchWord }
+              languageResult={ this.state.languageWord }
+              groupFunc={ (e)=> this.sortByGroup(e) }
+              orderFunc={ (e)=> this.sortByOrder(e) }
             />
-          </MuiThemeProvider>
-          <MuiThemeProvider>
-            <TextField
-              className='language-field'
-              hintText= 'ex: JavaScript'
-              floatingLabelText='Language (Optional)'
-              value={ this.state.languageWord } onChange={ (e) => this.setState({ languageWord: e.target.value }) }
-            />
-          </MuiThemeProvider>
-          <SortButtons
-            searchResult={ this.state.searchWord }
-            languageResult={ this.state.languageWord }
-            scoreFunc={ (e)=> this.sortByScore(e) }
-            starFunc={ (e)=> this.sortByStars(e) }
-          />
-          <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord } />
-        </aside>
-        <aside className='results-list'>
+            <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord } />
+          </aside>
           {this.showListInformation()}
-          <Repos ghrepos={this.state.results} />
-        </aside>
+          <aside>
+            <Repos ghrepos={this.state.results} sortWord={this.state.sortWord} orderWord={this.state.orderWord} />
+          </aside>
       </section>
     )
   }
