@@ -19,6 +19,8 @@
   display: inline-block;
   margin: 7px;
   color: #37474F;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
 }
 
 .radio-sort-buttons {
@@ -34,14 +36,16 @@
   display: block;
   margin: 7px auto;
   width: 80px;
-  font-size: 14px;
+  font-size: 16px;
   color: #FFFFFF;
-  background-color: #000000;
+  background-color: #37474F;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   outline: none;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
     &:hover {
-      background-color: #26C6DA;
+      background-color: #00BCD4;
     }
     &:disabled {
       background-color: #BDBDBD;
@@ -58,6 +62,8 @@
 
 .optional {
   color: #BDBDBD;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
 }
 
 .top-results-text {
@@ -79,13 +85,24 @@
   display: inline-block;
   padding: 10px;
   line-height: 150%;
-  border: 1px solid #00897B;
+  border: 1px solid #FFA000;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
 }
 
 .details {
-  color: #00897B;
+  color: #FFA000;
+  font-weight: 400;
 }
 
 .user-details {
   color: #37474F;
+}
+
+.link {
+  text-decoration: none;
+  color: #00BCD4;
+    &:hover {
+      color: #6A1B9A;
+    }
 }

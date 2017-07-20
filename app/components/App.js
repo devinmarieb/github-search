@@ -30,7 +30,12 @@ export default class App extends Component {
       return response.json()
     })
     .then((response)=> {
-      this.setState({ results: response.items, searchWord: '', languageWord: '', relevantSort: this.state.sortWord, relevantOrder: this.state.orderWord })
+      console.log(response);
+      this.setState({ results: response.items,
+                      searchWord: '',
+                      languageWord: '',
+                      relevantSort: this.state.sortWord,
+                      relevantOrder: this.state.orderWord })
     })
   }
 
@@ -42,47 +47,46 @@ export default class App extends Component {
     this.setState({ orderWord: e.target.value === 'up' ? 'desc' : 'asc'})
   }
 
-  showListInformation() {
-    if(this.state.results.length !== 0) {
-      return (
-        <p className='top-results-text'>Top 30 Results</p>
-      )
-    }
-  }
-
   render() {
     return (
       <section>
+        <h1 className='title'>GitHub Repo Search</h1>
           <aside className='input-fields'>
             <MuiThemeProvider>
               <TextField
                 className='search-field'
                 hintText= 'ex: Games'
                 floatingLabelText='Project Type (Required)'
-                value={ this.state.searchWord } onChange={ (e) => this.setState({ searchWord: e.target.value }) }
-              />
+                value={this.state.searchWord}
+                onChange={(e) => this.setState({ searchWord: e.target.value })} />
             </MuiThemeProvider>
             <MuiThemeProvider>
               <TextField
                 className='language-field'
                 hintText= 'ex: JavaScript'
                 floatingLabelText='Language (Optional)'
-                value={ this.state.languageWord } onChange={ (e) => this.setState({ languageWord: e.target.value }) }
-              />
+                value={this.state.languageWord}
+                onChange={(e) => this.setState({ languageWord: e.target.value })} />
             </MuiThemeProvider>
           </aside>
           <aside className='header'>
             <SortButtons
-              searchResult={ this.state.searchWord }
-              languageResult={ this.state.languageWord }
-              groupFunc={ (e)=> this.sortByGroup(e) }
-              orderFunc={ (e)=> this.sortByOrder(e) }
-            />
-            <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord } />
+              searchResult={this.state.searchWord}
+              languageResult={this.state.languageWord}
+              groupFunc={(e)=> this.sortByGroup(e)}
+              orderFunc={(e)=> this.sortByOrder(e)} />
+            <input
+              className='submit-button'
+              type='submit' value='Go'
+              onClick={()=> this.showGitHubResponse()}
+              disabled={!this.state.searchWord} />
           </aside>
-          {this.showListInformation()}
+          {this.state.results.length !== 0 ? <p className='top-results-text'>Top 30 Results</p> : null}
           <aside>
-            <Repos ghrepos={this.state.results} sortWord={this.state.relevantSort} orderWord={this.state.relevantOrder} />
+            <Repos
+              ghrepos={this.state.results}
+              sortWord={this.state.relevantSort}
+              orderWord={this.state.relevantOrder} />
           </aside>
       </section>
     )
