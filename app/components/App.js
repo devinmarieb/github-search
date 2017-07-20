@@ -15,12 +15,14 @@ export default class App extends Component {
     this.state = {
       searchWord: '',
       languageWord: '',
+      sortWord: 'stars',
+      orderWord: 'desc',
       results: []
     }
   }
 
   showGitHubResponse() {
-    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=stars&order=desc`)
+    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=${this.state.sortWord}&order=${this.state.orderWord}`)
     fetch(gitHubRequest).then((response)=> {
       return response.json()
     })
@@ -30,41 +32,38 @@ export default class App extends Component {
     })
   }
 
-  showSortButtons() {
-    if(this.state.results.length !== 0) {
-      return (
-        <SortButtons
-          searchResult={ this.state.searchWord }
-          languageResult={ this.state.languageWord }
-          scoreFunc={ (e)=> this.sortByScore(e) }
-          starFunc={ (e)=> this.sortByStars(e) }
-        />
-      )
-    }
-  }
-
   sortByScore(e) {
-    let order
-    e.target.value === 'up' ? order = 'asc' : order = 'desc'
-    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}&sort=score&order=${order}`)
-    fetch(gitHubRequest).then((response)=> {
-      return response.json()
-    })
-    .then((response)=> {
-      this.setState({ results: response.items })
-    })
+    // let order
+    this.setState({ sortWord: 'score' })
+    e.target.value === 'up' ? this.setState({ orderWord: 'asc' }) : this.setState({ orderWord: 'desc' })
+    // let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=score&order=${order}`)
+    // fetch(gitHubRequest).then((response)=> {
+    //   return response.json()
+    // })
+    // .then((response)=> {
+    //   this.setState({ results: response.items })
+    // })
   }
 
   sortByStars(e) {
-    let order
-    e.target.value === 'up' ? order = 'asc' : order = 'desc'
-    let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}&sort=stars&order=${order}`)
-    fetch(gitHubRequest).then((response)=> {
-      return response.json()
-    })
-    .then((response)=> {
-      this.setState({ results: response.items })
-    })
+    // let order
+    this.setState({ sortWord: 'stars' })
+    e.target.value === 'up' ? this.setState({ orderWord: 'asc' }) : this.setState({ orderWord: 'desc' })
+    // let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=stars&order=${order}`)
+    // fetch(gitHubRequest).then((response)=> {
+    //   return response.json()
+    // })
+    // .then((response)=> {
+    //   this.setState({ results: response.items })
+    // })
+  }
+
+  showListInformation() {
+    if(this.state.results.length !== 0) {
+      return (
+        <p>Top 30 Results</p>
+      )
+    }
   }
 
   render() {
@@ -87,10 +86,16 @@ export default class App extends Component {
               value={ this.state.languageWord } onChange={ (e) => this.setState({ languageWord: e.target.value }) }
             />
           </MuiThemeProvider>
+          <SortButtons
+            searchResult={ this.state.searchWord }
+            languageResult={ this.state.languageWord }
+            scoreFunc={ (e)=> this.sortByScore(e) }
+            starFunc={ (e)=> this.sortByStars(e) }
+          />
           <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord } />
         </aside>
         <aside className='results-list'>
-          {this.showSortButtons()}
+          {this.showListInformation()}
           <Repos ghrepos={this.state.results} />
         </aside>
       </section>
