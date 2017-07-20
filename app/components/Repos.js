@@ -8,6 +8,7 @@ const Repos = (props)=> {
         <p>Username: { repo.owner.login }</p>
         <p>Project Name: { repo.name }</p>
         <p>Project Description: { repo.description }</p>
+        <p>Project Language: { repo.language }</p>
         <p>Stars: { repo.stargazers_count }</p>
         <p>Score: { repo.score }</p>
       </article>

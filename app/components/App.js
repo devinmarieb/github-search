@@ -3,6 +3,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import TextField from 'material-ui/TextField'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import Repos from './Repos'
+import SortButtons from './SortButtons'
 
 import '../../styles/styles'
 
@@ -13,8 +14,6 @@ export default class App extends Component {
   constructor() {
     super()
     this.state = {
-      search: 'games',
-      language: 'javascript',
       searchWord: '',
       languageWord: '',
       results: []
@@ -32,7 +31,13 @@ export default class App extends Component {
     })
   }
 
-
+  showSortButtons() {
+    if(this.state.results.length !== 0) {
+      return (
+        <SortButtons searchResult={ this.state.searchWord } languageResult={ this.state.languageWord } />
+      )
+    }
+  }
 
   render() {
     return (
@@ -57,6 +62,7 @@ export default class App extends Component {
           <input className='submit-button' type='submit' value='Go' onClick={ ()=> this.showGitHubResponse() } disabled={ !this.state.searchWord || !this.state.languageWord } />
         </aside>
         <aside>
+          {this.showSortButtons()}
           <Repos ghrepos={this.state.results} />
         </aside>
       </section>
