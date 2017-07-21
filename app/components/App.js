@@ -24,6 +24,14 @@ export default class App extends Component {
     }
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', (e)=> {
+      if(e.which === 13) {
+        this.showGitHubResponse()
+      }
+    })
+  }
+
   showGitHubResponse() {
     let gitHubRequest = (`https://api.github.com/search/repositories?q=${this.state.searchWord}+language:${this.state.languageWord}&sort=${this.state.sortWord}&order=${this.state.orderWord}`)
     fetch(gitHubRequest).then((response)=> {
@@ -37,6 +45,7 @@ export default class App extends Component {
                       relevantSort: this.state.sortWord,
                       relevantOrder: this.state.orderWord })
     })
+    this.uncheckRadioBtns()
   }
 
   sortByGroup(e) {
@@ -47,14 +56,26 @@ export default class App extends Component {
     this.setState({ orderWord: e.target.value === 'up' ? 'desc' : 'asc'})
   }
 
+  uncheckRadioBtns() {
+    let radioBtns = document.getElementsByTagName('input')
+    for(let i = 0; i < radioBtns.length; i++) {
+      if(radioBtns[i].type === 'radio') {
+        radioBtns[i].checked = false
+      }
+    }
+  }
+
+  returnToTop() {
+    window.scrollTo(0, 0)
+  }
+
   render() {
     return (
       <section>
         <h1 className='title'>GitHub Repo Search</h1>
           <aside className='input-fields'>
             <MuiThemeProvider>
-              <TextField
-                className='search-field'
+              <TextField className='search-field'
                 hintText= 'ex: Games'
                 floatingLabelText='Project Type (Required)'
                 value={this.state.searchWord}
@@ -77,7 +98,8 @@ export default class App extends Component {
               orderFunc={(e)=> this.sortByOrder(e)} />
             <input
               className='submit-button'
-              type='submit' value='Go'
+              type='submit'
+              value='Go'
               onClick={()=> this.showGitHubResponse()}
               disabled={!this.state.searchWord} />
           </aside>
@@ -87,6 +109,13 @@ export default class App extends Component {
               ghrepos={this.state.results}
               sortWord={this.state.relevantSort}
               orderWord={this.state.relevantOrder} />
+              {this.state.results.length !== 0
+                ? <input
+                    className='return-to-top'
+                    type='submit'
+                    value='Return To Top'
+                    onClick={()=> this.returnToTop()} />
+                : null }
           </aside>
       </section>
     )

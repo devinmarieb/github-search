@@ -8,3 +8,25 @@ $titleFont: 'Raleway', sans-serif;
 $siteFont: 'Roboto', sans-serif;
 $thinFont: 300;
 $thickFont: 400;
+
+
+@mixin buttonStyle {
+  display: block;
+  margin: 7px auto;
+  outline: none;
+  border: none;
+  background-color: $mainFontColor;
+  font-family: $siteFont;
+  font-size: 16px;
+  font-weight: $thinFont;
+  color: #FFFFFF;
+    &:hover {
+      background-color: $mainStyleColor;
+    }
+    &:disabled {
+      background-color: $lightStyleColor;
+    }
+    &:hover:disabled {
+      background-color: $lightStyleColor;
+    }
+}

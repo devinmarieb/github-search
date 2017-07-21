@@ -35,26 +35,9 @@
 }
 
 .submit-button {
-  display: block;
-  margin: 7px auto;
   width: 80px;
-  outline: none;
-  border: none;
   border-radius: 12px;
-  background-color: $mainFontColor;
-  font-family: $siteFont;
-  font-size: 16px;
-  font-weight: $thinFont;
-  color: #FFFFFF;
-    &:hover {
-      background-color: $mainStyleColor;
-    }
-    &:disabled {
-      background-color: $lightStyleColor;
-    }
-    &:hover:disabled {
-      background-color: $lightStyleColor;
-    }
+  @include buttonStyle;
 }
 
 .header {
@@ -75,19 +58,13 @@
   color: $mainFontColor;
 }
 
-.repo-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
 .repo {
-  display: inline-block;
-  margin: 20px;
-  padding: 10px;
-  width: 45vw;
+  display: block;
+  margin: 20px auto;
+  padding-bottom: 15px;
+  width: 85vw;
   line-height: 150%;
-  border: 1px solid $secondaryStyleColor;
+  border-bottom: 1px solid $secondaryStyleColor;
   font-family: $siteFont;
   font-weight: $thinFont;
 }
@@ -107,6 +84,12 @@
     &:hover {
       color: $linkHoverColor;
     }
+}
+
+.return-to-top {
+  padding: 10px;
+  border-radius: 20px;
+  @include buttonStyle;
 }
 
 @import './mediaQuery';

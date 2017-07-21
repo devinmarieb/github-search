@@ -10,15 +10,15 @@ const Repos = (props)=> {
           <span className='user-details'>{repo.owner.login === null ? 'N/A' : repo.owner.login}</span>
         </p>
         <p>
-          <span className='details'>Project Name: </span>
+          <span className='details'>Repo Name: </span>
           <span className='user-details'>{repo.name === null ? 'N/A' : repo.name}</span>
         </p>
         <p>
-          <span className='details'>Project Description: </span>
+          <span className='details'>Repo Description: </span>
           <span className='user-details'>{repo.description === null ? 'N/A' : repo.description}</span>
         </p>
         <p>
-          <span className='details'>Project Language: </span>
+          <span className='details'>Repo Language: </span>
           <span className='user-details'>{repo.language === null ? 'N/A' : repo.language}</span>
         </p>
         <p>
