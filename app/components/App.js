@@ -19,7 +19,8 @@ export default class App extends Component {
       sortWord: '',
       relevantSort: '',
       relevantOrder: '',
-      results: []
+      results: [],
+      resultsLength: ''
     }
   }
 
@@ -37,12 +38,13 @@ export default class App extends Component {
       return response.json()
     })
     .then((response)=> {
-      console.log(response)
-      this.setState({results: response.items,
-                     searchWord: '',
-                     languageWord: '',
-                     relevantSort: this.state.sortWord,
-                     relevantOrder: this.state.orderWord})
+        this.setState({
+          results: response.items,
+          searchWord: '',
+          languageWord: '',
+          relevantSort: this.state.sortWord,
+          relevantOrder: this.state.orderWord,
+          resultsLength: response.total_count})
     })
     this.uncheckRadioBtns()
   }
@@ -52,7 +54,7 @@ export default class App extends Component {
   }
 
   sortByOrder(e) {
-    this.setState({orderWord: e.target.value === 'up' ? 'desc' : 'asc'})
+    this.setState({orderWord: e.target.value === 'desc' ? 'desc' : 'asc'})
   }
 
   uncheckRadioBtns() {
@@ -61,6 +63,14 @@ export default class App extends Component {
       if(radioBtns[i].type === 'radio') {
         radioBtns[i].checked = false
       }
+    }
+  }
+
+  checkForMatches() {
+    if(this.state.resultsLength > 0) {
+      return <p className='top-results-text'>Top 30 Results</p>
+    } else if(this.state.resultsLength === 0) {
+      return <p className='top-results-text'>No Matches</p>
     }
   }
 
@@ -101,7 +111,7 @@ export default class App extends Component {
             onClick={()=> this.showGitHubResponse()}
             disabled={!this.state.searchWord} />
         </aside>
-        {this.state.results.length !== 0 ? <p className='top-results-text'>Top 30 Results</p> : null}
+        {this.state.results !== [] ? this.checkForMatches() : null}
         <aside>
           <Repos
             ghrepos={this.state.results}

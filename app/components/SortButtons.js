@@ -9,14 +9,14 @@ const SortButtons = (props)=> {
       <input
         className='radio'
         type='radio'
-        value='up'
+        value='desc'
         name='order-by'
         onClick={props.orderFunc} />
       <p className='sort-text'>Least</p>
       <input
         className='radio'
         type='radio'
-        value='down'
+        value='asc'
         name='order-by'
         onClick={props.orderFunc} />
       <p className='sort-text sort-divider'>Relevant</p>
