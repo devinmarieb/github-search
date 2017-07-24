@@ -22258,22 +22258,41 @@
 	      languageWord: '',
 	      orderWord: 'desc',
 	      sortWord: '',
+	      relevantSort: '',
+	      relevantOrder: '',
 	      results: []
 	    };
 	    return _this;
 	  }
 
 	  _createClass(App, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      document.addEventListener('keydown', function (e) {
+	        if (e.which === 13) {
+	          _this2.showGitHubResponse();
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'showGitHubResponse',
 	    value: function showGitHubResponse() {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      var gitHubRequest = 'https://api.github.com/search/repositories?q=' + this.state.searchWord + '+language:' + this.state.languageWord + '&sort=' + this.state.sortWord + '&order=' + this.state.orderWord;
 	      fetch(gitHubRequest).then(function (response) {
 	        return response.json();
 	      }).then(function (response) {
-	        _this2.setState({ results: response.items, searchWord: '', languageWord: '' });
+	        console.log(response);
+	        _this3.setState({ results: response.items,
+	          searchWord: '',
+	          languageWord: '',
+	          relevantSort: _this3.state.sortWord,
+	          relevantOrder: _this3.state.orderWord });
 	      });
+	      this.uncheckRadioBtns();
 	    }
 	  }, {
 	    key: 'sortByGroup',
@@ -22286,74 +22305,99 @@
 	      this.setState({ orderWord: e.target.value === 'up' ? 'desc' : 'asc' });
 	    }
 	  }, {
-	    key: 'showListInformation',
-	    value: function showListInformation() {
-	      if (this.state.results.length !== 0) {
-	        return _react2.default.createElement(
-	          'p',
-	          { className: 'top-results-text' },
-	          'Top 30 Results'
-	        );
+	    key: 'uncheckRadioBtns',
+	    value: function uncheckRadioBtns() {
+	      var radioBtns = document.getElementsByTagName('input');
+	      for (var i = 0; i < radioBtns.length; i++) {
+	        if (radioBtns[i].type === 'radio') {
+	          radioBtns[i].checked = false;
+	        }
 	      }
+	    }
+	  }, {
+	    key: 'returnToTop',
+	    value: function returnToTop() {
+	      window.scrollTo(0, 0);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      return _react2.default.createElement(
 	        'section',
 	        null,
 	        _react2.default.createElement(
-	          'aside',
+	          'h1',
+	          { className: 'title' },
+	          'GitHub Repo Search'
+	        ),
+	        _react2.default.createElement(
+	          'section',
 	          { className: 'input-fields' },
 	          _react2.default.createElement(
 	            _MuiThemeProvider2.default,
 	            null,
-	            _react2.default.createElement(_TextField2.default, {
-	              className: 'search-field',
-	              hintText: 'ex: Games',
-	              floatingLabelText: 'Project Type (Required)',
-	              value: this.state.searchWord, onChange: function onChange(e) {
-	                return _this3.setState({ searchWord: e.target.value });
-	              }
-	            })
-	          ),
-	          _react2.default.createElement(
-	            _MuiThemeProvider2.default,
-	            null,
-	            _react2.default.createElement(_TextField2.default, {
-	              className: 'language-field',
-	              hintText: 'ex: JavaScript',
-	              floatingLabelText: 'Language (Optional)',
-	              value: this.state.languageWord, onChange: function onChange(e) {
-	                return _this3.setState({ languageWord: e.target.value });
-	              }
-	            })
+	            _react2.default.createElement(
+	              'aside',
+	              null,
+	              _react2.default.createElement(_TextField2.default, {
+	                className: 'search-field',
+	                hintText: 'ex: Games',
+	                floatingLabelText: 'Project Type (Required)',
+	                value: this.state.searchWord,
+	                onChange: function onChange(e) {
+	                  return _this4.setState({ searchWord: e.target.value });
+	                } }),
+	              _react2.default.createElement(_TextField2.default, {
+	                className: 'language-field',
+	                hintText: 'ex: JavaScript',
+	                floatingLabelText: 'Language (Optional)',
+	                value: this.state.languageWord,
+	                onChange: function onChange(e) {
+	                  return _this4.setState({ languageWord: e.target.value });
+	                } })
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(
 	          'aside',
 	          { className: 'header' },
 	          _react2.default.createElement(_SortButtons2.default, {
-	            searchResult: this.state.searchWord,
-	            languageResult: this.state.languageWord,
 	            groupFunc: function groupFunc(e) {
-	              return _this3.sortByGroup(e);
+	              return _this4.sortByGroup(e);
 	            },
 	            orderFunc: function orderFunc(e) {
-	              return _this3.sortByOrder(e);
-	            }
-	          }),
-	          _react2.default.createElement('input', { className: 'submit-button', type: 'submit', value: 'Go', onClick: function onClick() {
-	              return _this3.showGitHubResponse();
-	            }, disabled: !this.state.searchWord })
+	              return _this4.sortByOrder(e);
+	            } }),
+	          _react2.default.createElement('input', {
+	            className: 'submit-button',
+	            type: 'submit',
+	            value: 'Go',
+	            onClick: function onClick() {
+	              return _this4.showGitHubResponse();
+	            },
+	            disabled: !this.state.searchWord })
 	        ),
-	        this.showListInformation(),
+	        this.state.results.length !== 0 ? _react2.default.createElement(
+	          'p',
+	          { className: 'top-results-text' },
+	          'Top 30 Results'
+	        ) : null,
 	        _react2.default.createElement(
 	          'aside',
 	          null,
-	          _react2.default.createElement(_Repos2.default, { ghrepos: this.state.results, sortWord: this.state.sortWord, orderWord: this.state.orderWord })
+	          _react2.default.createElement(_Repos2.default, {
+	            ghrepos: this.state.results,
+	            sortWord: this.state.relevantSort,
+	            orderWord: this.state.relevantOrder }),
+	          this.state.results.length !== 0 ? _react2.default.createElement('input', {
+	            className: 'return-to-top',
+	            type: 'submit',
+	            value: 'Return To Top',
+	            onClick: function onClick() {
+	              return _this4.returnToTop();
+	            } }) : null
 	        )
 	      );
 	    }
@@ -31977,38 +32021,104 @@
 	      _react2.default.createElement(
 	        'p',
 	        null,
-	        'Username: ',
-	        repo.owner.login === null ? 'N/A' : repo.owner.login
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'details' },
+	          'Username: '
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'user-details' },
+	          repo.owner.login === null ? 'N/A' : repo.owner.login
+	        )
 	      ),
 	      _react2.default.createElement(
 	        'p',
 	        null,
-	        'Project Name: ',
-	        repo.name === null ? 'N/A' : repo.name
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'details' },
+	          'Repo Name: '
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'user-details' },
+	          repo.name === null ? 'N/A' : repo.name
+	        )
 	      ),
 	      _react2.default.createElement(
 	        'p',
 	        null,
-	        'Project Description: ',
-	        repo.description === null ? 'N/A' : repo.description
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'details' },
+	          'Repo Description: '
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'user-details' },
+	          repo.description === null ? 'N/A' : repo.description
+	        )
 	      ),
 	      _react2.default.createElement(
 	        'p',
 	        null,
-	        'Project Language: ',
-	        repo.language === null ? 'N/A' : repo.language
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'details' },
+	          'Repo Language: '
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'user-details' },
+	          repo.language === null ? 'N/A' : repo.language
+	        )
 	      ),
 	      _react2.default.createElement(
 	        'p',
 	        null,
-	        'Stars: ',
-	        repo.stargazers_count === null ? 'N/A' : repo.stargazers_count
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'details' },
+	          'Popularity: '
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'user-details' },
+	          repo.stargazers_count === null ? 'N/A' : repo.stargazers_count
+	        )
 	      ),
 	      _react2.default.createElement(
 	        'p',
 	        null,
-	        'Score: ',
-	        repo.score === null ? 'N/A' : repo.score
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'details' },
+	          'Relevance: '
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'user-details' },
+	          repo.score === null ? 'N/A' : repo.score
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        null,
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'details' },
+	          'GitHub URL: '
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'user-details' },
+	          repo.svn_url === null ? 'N/A' : _react2.default.createElement(
+	            'a',
+	            { href: repo.svn_url, className: 'link', target: 'blank' },
+	            repo.svn_url
+	          )
+	        )
 	      )
 	    );
 	  });
@@ -32053,25 +32163,45 @@
 	      { className: 'sort-text' },
 	      'Most'
 	    ),
-	    _react2.default.createElement('input', { className: 'radio', type: 'radio', value: 'up', name: 'order-by', onClick: props.orderFunc }),
+	    _react2.default.createElement('input', {
+	      className: 'radio',
+	      type: 'radio',
+	      value: 'up',
+	      name: 'order-by',
+	      onClick: props.orderFunc }),
 	    _react2.default.createElement(
 	      'p',
 	      { className: 'sort-text' },
 	      'Least'
 	    ),
-	    _react2.default.createElement('input', { className: 'radio', type: 'radio', value: 'down', name: 'order-by', onClick: props.orderFunc }),
+	    _react2.default.createElement('input', {
+	      className: 'radio',
+	      type: 'radio',
+	      value: 'down',
+	      name: 'order-by',
+	      onClick: props.orderFunc }),
 	    _react2.default.createElement(
 	      'p',
 	      { className: 'sort-text sort-divider' },
 	      'Relevant'
 	    ),
-	    _react2.default.createElement('input', { className: 'radio', type: 'radio', value: 'score', name: 'sort-by', onClick: props.groupFunc }),
+	    _react2.default.createElement('input', {
+	      className: 'radio',
+	      type: 'radio',
+	      value: 'score',
+	      name: 'sort-by',
+	      onClick: props.groupFunc }),
 	    _react2.default.createElement(
 	      'p',
 	      { className: 'sort-text' },
 	      'Popular'
 	    ),
-	    _react2.default.createElement('input', { type: 'radio', value: 'stars', name: 'sort-by', onClick: props.groupFunc })
+	    _react2.default.createElement('input', {
+	      className: 'radio',
+	      type: 'radio',
+	      value: 'stars',
+	      name: 'sort-by',
+	      onClick: props.groupFunc })
 	  );
 	};
 
@@ -32698,7 +32828,7 @@
 
 
 	// module
-	exports.push([module.id, ".title {\n  margin-top: 25px;\n  text-align: center;\n  font-family: 'Raleway', sans-serif;\n  font-size: 42px; }\n\n.input-fields {\n  text-align: center;\n  margin-bottom: 20px; }\n\n.search-field {\n  margin-right: 50px; }\n\n.sort-text {\n  display: inline-block;\n  margin: 7px; }\n\n.radio-sort-buttons {\n  text-align: center; }\n\n.sort-divider {\n  border-left: 1px solid black;\n  padding-left: 7px; }\n\n.submit-button {\n  display: block;\n  margin: 7px auto;\n  width: 80px;\n  font-size: 14px;\n  color: #FFFFFF;\n  background-color: #000000;\n  border: none;\n  border-radius: 10px;\n  outline: none; }\n  .submit-button:hover {\n    background-color: #00BCD4; }\n  .submit-button:disabled {\n    background-color: #BDBDBD; }\n  .submit-button:hover:disabled {\n    background-color: #BDBDBD; }\n\n.header {\n  padding-bottom: 7px;\n  box-shadow: 0 4px 6px -6px #222; }\n\n.optional {\n  color: #BDBDBD; }\n\n.top-results-text {\n  margin: 10px;\n  font-size: 18px;\n  text-align: center; }\n\n.repo-list {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: space-around; }\n\n.repo {\n  margin: 20px;\n  width: 45vw;\n  display: inline-block;\n  padding: 10px;\n  line-height: 150%;\n  border: 1px solid grey; }\n", ""]);
+	exports.push([module.id, ".title {\n  margin-top: 25px;\n  text-align: center;\n  font-family: \"Raleway\", sans-serif;\n  font-size: 42px;\n  color: #37474F; }\n\n.input-fields {\n  margin-bottom: 20px;\n  text-align: center; }\n\n.search-field {\n  margin-right: 50px; }\n\n.sort-text {\n  display: inline-block;\n  margin: 7px;\n  color: #37474F;\n  font-family: \"Roboto\", sans-serif;\n  font-weight: 300; }\n\n.radio-sort-buttons {\n  text-align: center; }\n\n.sort-divider {\n  padding-left: 7px;\n  border-left: 1px solid #37474F; }\n\n.submit-button {\n  width: 80px;\n  border-radius: 12px;\n  display: block;\n  margin: 7px auto;\n  outline: none;\n  border: none;\n  background-color: #37474F;\n  font-family: \"Roboto\", sans-serif;\n  font-size: 16px;\n  font-weight: 300;\n  color: #FFFFFF; }\n  .submit-button:hover {\n    background-color: #00BCD4; }\n  .submit-button:disabled {\n    background-color: #BDBDBD; }\n  .submit-button:hover:disabled {\n    background-color: #BDBDBD; }\n\n.header {\n  padding-bottom: 7px;\n  box-shadow: 0 4px 6px -6px #222; }\n\n.optional {\n  font-family: \"Roboto\", sans-serif;\n  font-weight: 300;\n  color: #BDBDBD; }\n\n.top-results-text {\n  margin: 10px;\n  text-align: center;\n  font-size: 18px;\n  color: #37474F; }\n\n.repo {\n  display: block;\n  margin: 20px auto;\n  padding-bottom: 15px;\n  width: 85vw;\n  line-height: 150%;\n  border-bottom: 1px solid #FFA000;\n  font-family: \"Roboto\", sans-serif;\n  font-weight: 300; }\n\n.details {\n  color: #FFA000;\n  font-weight: 400; }\n\n.user-details {\n  color: #37474F; }\n\n.link {\n  text-decoration: none;\n  color: #00BCD4; }\n  .link:hover {\n    color: #6A1B9A; }\n\n.return-to-top {\n  padding: 10px;\n  border-radius: 20px;\n  display: block;\n  margin: 7px auto;\n  outline: none;\n  border: none;\n  background-color: #37474F;\n  font-family: \"Roboto\", sans-serif;\n  font-size: 16px;\n  font-weight: 300;\n  color: #FFFFFF; }\n  .return-to-top:hover {\n    background-color: #00BCD4; }\n  .return-to-top:disabled {\n    background-color: #BDBDBD; }\n  .return-to-top:hover:disabled {\n    background-color: #BDBDBD; }\n\n@media screen and (max-width: 560px) {\n  .title {\n    margin-top: 15px;\n    padding: 10px;\n    font-size: 36px; }\n  .search-field {\n    margin: 0; }\n  .optional {\n    padding: 5px 15px; } }\n", ""]);
 
 	// exports
 
