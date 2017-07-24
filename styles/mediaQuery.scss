@@ -1,0 +1,17 @@
+@import './variables';
+
+@media screen and (max-width: 560px) {
+  .title {
+    margin-top: 15px;
+    padding: 10px;
+    font-size: 36px;
+  }
+
+  .search-field {
+    margin: 0;
+  }
+
+  .optional {
+    padding: 5px 15px;
+  }
+}

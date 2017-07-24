@@ -1,13 +1,16 @@
+@import './variables';
+
 .title {
   margin-top: 25px;
   text-align: center;
-  font-family: 'Raleway', sans-serif;
+  font-family: $titleFont;
   font-size: 42px;
+  color: $mainFontColor;
 }
 
 .input-fields {
-  text-align: center;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .search-field {
@@ -17,6 +20,9 @@
 .sort-text {
   display: inline-block;
   margin: 7px;
+  color: $mainFontColor;
+  font-family: $siteFont;
+  font-weight: $thinFont;
 }
 
 .radio-sort-buttons {
@@ -24,29 +30,14 @@
 }
 
 .sort-divider {
-  border-left: 1px solid black;
   padding-left: 7px;
+  border-left: 1px solid $mainFontColor;
 }
 
 .submit-button {
-  display: block;
-  margin: 7px auto;
   width: 80px;
-  font-size: 14px;
-  color: #FFFFFF;
-  background-color: #000000;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-    &:hover {
-      background-color: #00BCD4;
-    }
-    &:disabled {
-      background-color: #BDBDBD;
-    }
-    &:hover:disabled {
-      background-color: #BDBDBD;
-    }
+  border-radius: 12px;
+  @include buttonStyle;
 }
 
 .header {
@@ -55,26 +46,50 @@
 }
 
 .optional {
-  color: #BDBDBD;
+  font-family: $siteFont;
+  font-weight: $thinFont;
+  color: $lightStyleColor;
 }
 
 .top-results-text {
   margin: 10px;
-  font-size: 18px;
   text-align: center;
-}
-
-.repo-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  font-size: 18px;
+  color: $mainFontColor;
 }
 
 .repo {
-  margin: 20px;
-  width: 45vw;
-  display: inline-block;
-  padding: 10px;
+  display: block;
+  margin: 20px auto;
+  padding-bottom: 15px;
+  width: 85vw;
   line-height: 150%;
-  border: 1px solid grey;
+  border-bottom: 1px solid $secondaryStyleColor;
+  font-family: $siteFont;
+  font-weight: $thinFont;
 }
+
+.details {
+  color: $secondaryStyleColor;
+  font-weight: $thickFont;
+}
+
+.user-details {
+  color: $mainFontColor;
+}
+
+.link {
+  text-decoration: none;
+  color: $mainStyleColor;
+    &:hover {
+      color: $linkHoverColor;
+    }
+}
+
+.return-to-top {
+  padding: 10px;
+  border-radius: 20px;
+  @include buttonStyle;
+}
+
+@import './mediaQuery';
