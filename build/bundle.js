@@ -22260,7 +22260,8 @@
 	      sortWord: '',
 	      relevantSort: '',
 	      relevantOrder: '',
-	      results: []
+	      results: [],
+	      resultsLength: ''
 	    };
 	    return _this;
 	  }
@@ -22285,12 +22286,13 @@
 	      fetch(gitHubRequest).then(function (response) {
 	        return response.json();
 	      }).then(function (response) {
-	        console.log(response);
-	        _this3.setState({ results: response.items,
+	        _this3.setState({
+	          results: response.items,
 	          searchWord: '',
 	          languageWord: '',
 	          relevantSort: _this3.state.sortWord,
-	          relevantOrder: _this3.state.orderWord });
+	          relevantOrder: _this3.state.orderWord,
+	          resultsLength: response.total_count });
 	      });
 	      this.uncheckRadioBtns();
 	    }
@@ -22302,7 +22304,7 @@
 	  }, {
 	    key: 'sortByOrder',
 	    value: function sortByOrder(e) {
-	      this.setState({ orderWord: e.target.value === 'up' ? 'desc' : 'asc' });
+	      this.setState({ orderWord: e.target.value === 'desc' ? 'desc' : 'asc' });
 	    }
 	  }, {
 	    key: 'uncheckRadioBtns',
@@ -22312,6 +22314,23 @@
 	        if (radioBtns[i].type === 'radio') {
 	          radioBtns[i].checked = false;
 	        }
+	      }
+	    }
+	  }, {
+	    key: 'checkForMatches',
+	    value: function checkForMatches() {
+	      if (this.state.resultsLength > 0) {
+	        return _react2.default.createElement(
+	          'p',
+	          { className: 'top-results-text' },
+	          'Top 30 Results'
+	        );
+	      } else if (this.state.resultsLength === 0) {
+	        return _react2.default.createElement(
+	          'p',
+	          { className: 'top-results-text' },
+	          'No Matches'
+	        );
 	      }
 	    }
 	  }, {
@@ -22379,11 +22398,7 @@
 	            },
 	            disabled: !this.state.searchWord })
 	        ),
-	        this.state.results.length !== 0 ? _react2.default.createElement(
-	          'p',
-	          { className: 'top-results-text' },
-	          'Top 30 Results'
-	        ) : null,
+	        this.state.results !== [] ? this.checkForMatches() : null,
 	        _react2.default.createElement(
 	          'aside',
 	          null,
@@ -32166,7 +32181,7 @@
 	    _react2.default.createElement('input', {
 	      className: 'radio',
 	      type: 'radio',
-	      value: 'up',
+	      value: 'desc',
 	      name: 'order-by',
 	      onClick: props.orderFunc }),
 	    _react2.default.createElement(
@@ -32177,7 +32192,7 @@
 	    _react2.default.createElement('input', {
 	      className: 'radio',
 	      type: 'radio',
-	      value: 'down',
+	      value: 'asc',
 	      name: 'order-by',
 	      onClick: props.orderFunc }),
 	    _react2.default.createElement(
