@@ -22323,7 +22323,7 @@
 	        return _react2.default.createElement(
 	          'p',
 	          { className: 'top-results-text' },
-	          'Top 30 Results'
+	          'Top Results'
 	        );
 	      } else if (this.state.resultsLength === 0) {
 	        return _react2.default.createElement(

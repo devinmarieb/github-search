@@ -68,7 +68,7 @@ export default class App extends Component {
 
   checkForMatches() {
     if(this.state.resultsLength > 0) {
-      return <p className='top-results-text'>Top 30 Results</p>
+      return <p className='top-results-text'>Top Results</p>
     } else if(this.state.resultsLength === 0) {
       return <p className='top-results-text'>No Matches</p>
     }
