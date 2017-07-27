@@ -14,7 +14,7 @@ export default class App extends Component {
     super()
     this.state = {
       searchWord: '',
-      languageWord: '',
+      languageWord: '*',
       orderWord: 'desc',
       sortWord: '',
       relevantSort: '',
