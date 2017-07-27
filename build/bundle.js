@@ -22255,7 +22255,7 @@
 
 	    _this.state = {
 	      searchWord: '',
-	      languageWord: '',
+	      languageWord: '*',
 	      orderWord: 'desc',
 	      sortWord: '',
 	      relevantSort: '',
